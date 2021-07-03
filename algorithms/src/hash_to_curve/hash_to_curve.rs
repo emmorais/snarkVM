@@ -15,13 +15,14 @@
 // along with the snarkVM library. If not, see <https://www.gnu.org/licenses/>.
 
 use crate::crh::sha256::sha256;
-use snarkvm_curves::bls12_377::{Fq, G1Affine};
+use rand_chacha::{rand_core::SeedableRng, ChaCha8Rng};
+use snarkvm_curves::{
+    bls12_377::{Fq, G1Affine},
+    AffineCurve,
+};
 use snarkvm_fields::{One, Zero};
-use rand_chacha::ChaCha8Rng;
-use rand_chacha::rand_core::SeedableRng;
-use snarkvm_curves::AffineCurve;
-use std::ops::AddAssign;
 use snarkvm_utilities::UniformRand;
+use std::ops::AddAssign;
 
 pub fn hash_to_curve(input: &str) -> G1Affine {
     let mut rng = ChaCha8Rng::from_seed(sha256(input.as_bytes()));
@@ -44,7 +45,12 @@ pub fn hash_to_curve(input: &str) -> G1Affine {
 fn hash_bls12_377() {
     let g1 = hash_to_curve("Aleo BLS12-377 G1");
     assert!(g1.is_in_correct_subgroup_assuming_on_curve());
-    println!("g1: {}", g1);
-    assert_eq!(g1.x.to_string(), "55965310611925736182344266514489161724026037910766990800227254498080679430741845649557376683529002177041434636955");
-    assert_eq!(g1.y.to_string(), "47988536770352052135994920271989708481287122349204081233627486611634010967671014168936729210354715817984213346861761");
+    assert_eq!(
+        g1.x.to_string(),
+        "55965310611925736182344266514489161724026037910766990800227254498080679430741845649557376683529002177041434636955"
+    );
+    assert_eq!(
+        g1.y.to_string(),
+        "47988536770352052135994920271989708481287122349204081233627486611634010967671014168936729210354715817984213346861761"
+    );
 }
