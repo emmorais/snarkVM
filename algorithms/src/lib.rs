@@ -70,7 +70,12 @@ pub mod signature;
 #[cfg(feature = "snark")]
 pub mod snark;
 
+#[cfg(feature = "hash_to_curve")]
+pub mod hash_to_curve;
+
 pub mod traits;
+pub mod hash_to_curve;
+
 pub use traits::*;
 
 pub mod prelude {
